@@ -1,5 +1,17 @@
+from unittest.mock import patch, MagicMock
 from syscheck.servicecheck import check_service
 
-def test_check_service_returns_status():
+
+@patch("syscheck.servicecheck.subprocess.run")
+def test_check_service_returns_active_true(mock_run):
+    mock_run.return_value = MagicMock(stdout="active\n")
     result = check_service("sshd")
-    assert "active" in result
+    assert result["active"] is True
+    assert result["name"] == "sshd"
+
+
+@patch("syscheck.servicecheck.subprocess.run")
+def test_check_service_returns_active_false(mock_run):
+    mock_run.return_value = MagicMock(stdout="inactive\n")
+    result = check_service("crond")
+    assert result["active"] is False
