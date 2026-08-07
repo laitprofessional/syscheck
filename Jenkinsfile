@@ -5,7 +5,7 @@ pipeline {
 	stage ('Test') {
 	   steps {
 	       sh 'pip3 install pytest --user --break-system-packages'
-   	       sh 'PYTHONPATH=, ~/.local/bin/pytest -v --junitxm=results.xml' 
+   	       sh 'PYTHONPATH=. python3 -m  pytest -v --junitxml=results.xml' 
 	   }
 	   post {
 	       always {
